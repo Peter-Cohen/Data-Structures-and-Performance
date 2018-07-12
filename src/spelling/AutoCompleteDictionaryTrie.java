@@ -36,9 +36,10 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
    */
   public boolean addWord(String word) {
 
-    word = word.toLowerCase();
     TrieNode current = root;
     boolean isNewWord = false;
+
+    word = word.toLowerCase();
 
     for (char c:word.toCharArray()) {
       // Not yet in trie:
@@ -48,16 +49,14 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
       // Already in the trie:
       } else {
         current = current.getChild(c);
-        isNewWord = false;
+        //isNewWord = false;
       }
     }
 
     // If we end up here, at the end of the loop, we know that word is a word
-    current.setEndsWord(true);
-
-
-    if (isNewWord) {
+    if (current.endsWord() == false && isNewWord) {
       this.size++;
+      current.setEndsWord(true);
     }
 
     return isNewWord;
@@ -79,8 +78,23 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
    */
   @Override
   public boolean isWord(String s) {
-    // TODO: Implement this method
-    return false;
+
+    TrieNode current = root;
+
+    s = s.toLowerCase();
+
+    for(char c: s.toCharArray()) {
+
+      current = current.getChild(c);
+
+      if(current == null) {
+        return false;
+      }
+
+    }
+
+    return current.endsWord();
+
   }
 
 
