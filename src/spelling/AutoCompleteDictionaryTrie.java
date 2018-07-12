@@ -120,23 +120,63 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
   public List<String> predictCompletions(String prefix, int numCompletions) {
     // TODO: Implement this method
     // This method should implement the following algorithm:
-    // 1. Find the stem in the trie. If the stem does not appear in the trie, return
-    // an
-    // empty list
-    // 2. Once the stem is found, perform a breadth first search to generate
-    // completions
-    // using the following algorithm:
-    // Create a queue (LinkedList) and add the node that completes the stem to the
-    // back
-    // of the list.
-    // Create a list of completions to return (initially empty)
-    // While the queue is not empty and you don't have enough completions:
-    // remove the first Node from the queue
-    // If it is a word, add it to the completions list
-    // Add all of its child nodes to the back of the queue
-    // Return the list of completions
+    //    1. Find the stem in the trie. If the stem does not appear in the trie, return
+    //        an empty list
+    //
+    //    2. Once the stem is found, perform a breadth first search to generate
+    //        completions using the following algorithm:
+    //
+    //      a) Create a queue (LinkedList) and add the node that completes the stem to the
+    //          back of the list.
+    //
+    //      b) Create a list of completions to return (initially empty)
+    //
+    //      c) While the queue is not empty and you don't have enough completions:
+    //          - remove the first Node from the queue
+    //          - If it is a word, add it to the completions list
+    //          - Add all of its child nodes to the back of the queue
+    //          - Return the list of completions
 
-    return null;
+    LinkedList<TrieNode> nodesQueue = new LinkedList<TrieNode>();
+    List<String> completions = new LinkedList<>();
+    TrieNode current;
+
+    prefix = prefix.toLowerCase();
+
+    // Find the stem in the trie, If we manage to finish the loop without return, the stem is
+    //  in the trie, and current reflects the stem's node
+    current = root;
+    for (char c:prefix.toCharArray()) {
+      TrieNode t = current.getChild(c);
+      if (t == null) {
+        return completions;
+      }
+      current = t;
+    }
+
+    // The stem is in the trie, so we have to add the current node to the nodesQueue
+    nodesQueue.add(current);
+
+
+    while (!nodesQueue.isEmpty() && completions.size() < numCompletions) {
+
+      current = nodesQueue.remove();
+
+      if (current.endsWord()) {
+        completions.add(current.getText());
+      }
+
+      //  Add child nodes to the nodesQueue:
+      Set<Character> children = current.getValidNextCharacters();
+
+      for (char c: children) {
+        nodesQueue.add(current.getChild(c));
+      }
+
+    }
+
+    return completions;
+
   }
 
 
@@ -160,7 +200,7 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
     TrieNode next = null;
     for (Character c : curr.getValidNextCharacters()) {
       next = curr.getChild(c);
-      printNode(next);;
+      printNode(next);
     }
   }
 
