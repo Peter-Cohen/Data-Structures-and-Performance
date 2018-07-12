@@ -54,7 +54,7 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
     }
 
     // If we end up here, at the end of the loop, we know that word is a word
-    if (current.endsWord() == false && isNewWord) {
+    if (current.endsWord() == false) {
       this.size++;
       current.setEndsWord(true);
     }
