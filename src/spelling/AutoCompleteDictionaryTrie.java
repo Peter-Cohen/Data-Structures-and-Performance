@@ -35,8 +35,32 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
    * dictionary.
    */
   public boolean addWord(String word) {
-    // TODO: Implement this method.
-    return false;
+
+    word = word.toLowerCase();
+    TrieNode current = root;
+    boolean isNewWord = false;
+
+    for (char c:word.toCharArray()) {
+      // Not yet in trie:
+      if (current.getChild(c) == null) {
+        current = current.insert(c);
+        isNewWord = true;
+      // Already in the trie:
+      } else {
+        current = current.getChild(c);
+        isNewWord = false;
+      }
+    }
+
+    // If we end up here, at the end of the loop, we know that word is a word
+    current.setEndsWord(true);
+
+
+    if (isNewWord) {
+      this.size++;
+    }
+
+    return isNewWord;
   }
 
 
