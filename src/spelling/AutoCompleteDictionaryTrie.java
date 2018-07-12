@@ -69,8 +69,7 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
    * TrieNodes in the trie.
    */
   public int size() {
-    // TODO: Implement this method
-    return 0;
+    return this.size;
   }
 
 
