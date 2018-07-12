@@ -155,12 +155,32 @@ public class AutoCompleteDictionaryTrie implements Dictionary, AutoComplete {
     }
 
     System.out.println(curr.getText());
+    //System.out.println(curr.getText() + "     " + curr.endsWord());
 
     TrieNode next = null;
     for (Character c : curr.getValidNextCharacters()) {
       next = curr.getChild(c);
-      printNode(next);
+      printNode(next);;
     }
   }
+
+
+  public static void main(String[] args) {
+
+    AutoCompleteDictionaryTrie smallDict = new AutoCompleteDictionaryTrie();
+    smallDict.addWord("Hello");
+    smallDict.addWord("HElLo");
+    smallDict.addWord("help");
+    smallDict.addWord("he");
+    smallDict.addWord("hem");
+    smallDict.addWord("hot");
+    smallDict.addWord("hey");
+    smallDict.addWord("a");
+    smallDict.addWord("subsequent");
+
+    smallDict.printTree();
+
+  }
+
 
 }
